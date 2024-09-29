@@ -3,6 +3,7 @@
 import { ReactEventHandler, useEffect, useRef, useState } from "react";
 import { Tooltip } from "react-tooltip";
 import Timeline from "./timeline/Timeline";
+import Form from "./Form";
 
 type VideoPlayerProsp = {
 	src: string;
@@ -24,17 +25,19 @@ export default function VideoPlayer(props: VideoPlayerProsp) {
 	useEffect(() => {
 		const videoPlayer = videoRef.current as HTMLVideoElement;
 		const duration = videoPlayer.duration;
-		console.log(duration);
-		console.log(timeClicked);
-		console.log(duration * timeClicked);
+		// console.log(duration);
+		// console.log(timeClicked);
+		// console.log(duration * timeClicked);
 		videoRef.current?.fastSeek(duration * timeClicked);
 	}, [timeClicked]);
 	//
 
 	return (
 		<div className="w-screen h-screen flex bg-slate-400 justify-center pt-5 flex-col items-center">
+			<Form />
+
 			<Tooltip id="tooltipId" />
-			<div className="w-8/12">
+			{/* <div className="w-8/12">
 				<video src={props.src} controls onTimeUpdate={timeUpdateHandler} ref={videoRef} />
 				<Timeline
 					tags={
@@ -46,7 +49,7 @@ export default function VideoPlayer(props: VideoPlayerProsp) {
 					cursor={progress}
 					setTimeClicked={setTimeClicked}
 				/>
-			</div>
+			</div> */}
 		</div>
 	);
 }
