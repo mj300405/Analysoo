@@ -4,7 +4,7 @@ FROM python:3.12-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV DEEPFACE_HOME /app/backend/deepface_data
+ENV DEEPFACE_HOME /app/deepface_data
 
 # Set work directory
 WORKDIR /app
@@ -20,11 +20,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install Poetry
 RUN pip install poetry
 
-# Copy only requirements to cache them in docker layer
-COPY backend/pyproject.toml backend/poetry.lock ./backend/
-
-# Set the working directory to where the pyproject.toml file is
-WORKDIR /app/backend
+# Copy pyproject.toml and poetry.lock
+COPY pyproject.toml poetry.lock ./
 
 # Project initialization:
 RUN poetry config virtualenvs.create false \
@@ -34,16 +31,13 @@ RUN poetry config virtualenvs.create false \
 RUN pip install psycopg2-binary django-cors-headers whitenoise gunicorn dj-database-url
 
 # Create deepface_data directory
-RUN mkdir -p /app/backend/deepface_data && chmod 777 /app/backend/deepface_data
+RUN mkdir -p /app/deepface_data && chmod 777 /app/deepface_data
 
 # Copy project
-COPY backend /app/backend
-
-# Set the working directory back to /app
-WORKDIR /app
+COPY . .
 
 # Collect static files
-RUN python backend/manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Run the application
-CMD gunicorn --chdir backend BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
+CMD gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
