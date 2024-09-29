@@ -2,17 +2,35 @@
 
 import { ReactEventHandler, useEffect, useRef, useState } from "react";
 import { Tooltip } from "react-tooltip";
-import Timeline from "./timeline/Timeline";
-import Form from "./Form";
 
-type VideoPlayerProsp = {
-	src: string;
+type VideoPlayerProps = {
+	src: File;
 };
 
-export default function VideoPlayer(props: VideoPlayerProsp) {
+export default function VideoPlayer(props: VideoPlayerProps) {
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const [progress, setProgress] = useState<number>(0);
-	const [timeClicked, setTimeClicked] = useState<number>(0);
+	const [fileURL, setFileURL] = useState<string>("");
+
+	// Supported video MIME types
+	const supportedMimeTypes = ["video/mp4", "video/webm", "video/ogg"];
+
+	// Generate file URL only once when the component mounts
+	useEffect(() => {
+		// Check if the file type is supported
+		if (supportedMimeTypes.includes(props.src.type)) {
+			const url = URL.createObjectURL(props.src);
+			setFileURL(url);
+
+			// Clean up the URL when the component unmounts
+			return () => {
+				URL.revokeObjectURL(url);
+			};
+		} else {
+			console.error("Unsupported video format: " + props.src.type);
+			setFileURL(""); // Clear file URL if unsupported
+		}
+	}, [props.src]);
 
 	const timeUpdateHandler: ReactEventHandler<HTMLVideoElement> = (event) => {
 		const videoPlayer = event.target as HTMLVideoElement;
@@ -26,15 +44,11 @@ export default function VideoPlayer(props: VideoPlayerProsp) {
 		<>
 			<Tooltip id="tooltipId" />
 			<div className="w-2/6">
-				<video src={props.src} controls onTimeUpdate={timeUpdateHandler} ref={videoRef} />
-				{/* <Timeline
-					tags={[
-						{ message: "Tag1", timestamp: 0.24 },
-						{ message: "Tag2", timestamp: 0.56 }
-					]}
-					cursor={progress}
-					setTimeClicked={setTimeClicked}
-				/> */}
+				{fileURL ? (
+					<video src={fileURL} controls onTimeUpdate={timeUpdateHandler} ref={videoRef} />
+				) : (
+					<p>Unsupported video format. Please upload an MP4, WebM, or Ogg file.</p>
+				)}
 			</div>
 		</>
 	);

@@ -271,7 +271,7 @@ const AnalysisComponent = (props: ResultsProps) => {
 								<ul className="list-disc ml-6">
 									{Object.entries(results.text_analysis.sentiment.emotion_score).map(([emotion, score]) => (
 										<li key={emotion}>
-											{emotion}: {score}
+											{emotion}: {String(score)}
 										</li>
 									))}
 								</ul>
@@ -306,7 +306,7 @@ const AnalysisComponent = (props: ResultsProps) => {
 						{results.text_analysis?.speech_errors && (
 							<>
 								<ul className="list-disc ml-6">
-									{results.text_analysis.speech_errors.grammatical_errors.map((error, index) => (
+									{results.text_analysis.speech_errors.grammatical_errors.map((error: any, index: number) => (
 										<li key={index}>
 											<strong>Error:</strong> {error.error}, <strong>Correction:</strong> {error.correction}
 										</li>
@@ -330,7 +330,7 @@ const AnalysisComponent = (props: ResultsProps) => {
 								<ul className="list-disc ml-6">
 									{Object.entries(results.video_analysis.emotions).map(([emotion, score]) => (
 										<li key={emotion}>
-											{emotion}: {score.toFixed(2)}%
+											{emotion}: {(score as number).toFixed(2)}%
 										</li>
 									))}
 								</ul>

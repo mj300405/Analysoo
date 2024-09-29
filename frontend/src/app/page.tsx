@@ -8,7 +8,7 @@ export default function Home() {
 
 	return (
 		<div className="w-screen h-screen flex bg-slate-400 justify-center pt-5 flex-col items-center overflow-scroll">
-			{file !== null && <VideoPlayer src="videos/HY_2024_film_01.mp4" />}
+			{file !== null && <VideoPlayer src={file} />}
 			<Form file={file} setFile={setFile} />
 		</div>
 	);
