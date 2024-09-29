@@ -10,9 +10,9 @@ build:
 run:
   web:
     command:
-      - cd backend && gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
+      - gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
     image: web
   worker:
     command:
-      - cd backend && celery -A BreakWordTrapsBackend worker -l info
+      - celery -A BreakWordTrapsBackend worker -l info
     image: web

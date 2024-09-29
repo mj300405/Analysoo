@@ -39,7 +39,4 @@ COPY backend .
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Set the working directory to /app
-WORKDIR /app
-
 # The CMD is now set in the heroku.yml file
