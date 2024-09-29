@@ -4,60 +4,8 @@ type ResultsProps = {
 	results: any | null;
 };
 
-const fakeJson = {
-	status: "COMPLETED",
-	results: {
-		readability: {
-			gunning_fog_index: 8.05,
-			flesch_reading_ease: 60.01
-		},
-		text_analysis: {
-			sentiment:
-				'{\n    "overall_sentiment": "negatywny",\n    "emotion_score": {\n        "radość": 0,\n        "smutek": 0.4,\n        "złość": 0.6,\n        "strach": 0,\n        "zaskoczenie": 0.1\n    },\n    "explanation": "Ten tekst ma negatywny sentyment, ponieważ opisuje niegospodarne i niecelowe wydatkowanie środków publicznych, co jest negatywne dla społeczności. Odbiorcy mogą czuć smutek i złość z powodu tego niewłaściwego zarządzania funduszami."\n}',
-			key_phrases:
-				'\n{\n    "main_topics": ["audyt", "środki publiczne", "dotacje", "niegospodarność", "niecelowość wydatków", "kryteria konkursowe"],\n    "key_phrases": ["96 podmiotów", "około 100 miliardów złotych", "niegospodarne i niecelowe wydatkowanie", "udzielenie dotacji podmiotom, które nie spełniały kryteriów konkursowych"],\n    "summary": "Przeprowadzony audyt na 96 podmiotach o wartości ok. 100 mld zł ujawnił niegospodarność i niecelowe wydatkowanie środków publicznych, w tym udzielanie dotacji podmiotom nie spełniającym kryteriów konkursowych."\n}',
-			speech_errors:
-				'{\n    "grammatical_errors": [\n        {"error": "udzielenie dotacji podmiotów", "correction": "udzielenie dotacji podmiotom"}\n    ],\n    "stylistic_issues": [],\n    "overall_quality": "wysoka"\n}',
-			target_audience:
-				'{\n    "age_group": "dorosli",\n    "education_level": "wyższe",\n    "expertise": "zaawansowany",\n    "interests": ["audyt", "finanse", "prawo", "polityka"],\n    "explanation": "Tekst jest związany z audytem finansowym i prawnym, a więc wymaga zaawansowanej wiedzy specjalistycznej. Jest skierowany do osób dorosłych z wyższym wykształceniem, które interesują się tymi tematami."\n}',
-			subtitle_quality:
-				'{\n    "accuracy": "wysoka",\n    "grammar": "poprawna",\n    "formatting": "dobra",\n    "overall_quality": "wysoka",\n    "improvement_suggestions": ["Poprawić interpunkcję dodając przecinki tam, gdzie są wymagane: ...udzielenie dotacji podmiotom, które nie spełniały kryteriów konkursowych."]\n}',
-			comprehensibility:
-				'{\n    "score": 9,\n    "explanation": "Tekst jest klarowny i dobrze sformułowany, z jednym wyjątkiem – brakuje informacji, czy podmioty, które nie spełniały kryteriów konkursowych, otrzymały dotacje.",\n    "clarity": "wysoka",\n    "structure": "dobra",\n    "vocabulary": "średnie"\n}',
-			language_detection:
-				'\n            {\n                "main_language": "polski",\n                "confidence": "wysoka",\n                "foreign_phrases": [],\n                "dialects": []\n            }',
-			generated_questions:
-				'\n            {\n                "questions": [\n                    {"question": "Ile podmiotów zostało objętych audytem?", "type": "faktograficzne"},\n                    {"question": "Jaka była łączna kwota badanych środków publicznych?", "type": "faktograficzne"},\n                    {"question": "Jakie nieprawidłowości stwierdzono w toku działań?", "type": "faktograficzne"},\n                    {"question": "Czy wszystkie podmioty, które otrzymały dotacje, spełniały kryteria konkursowe?", "type": "analityczne"},\n                    {"question": "Jakie mogą być rezultaty niegospodarnego i niecelowego wydatkowania środków publicznych?", "type": "opiniotwórcze"}\n                ]\n            }',
-			structure_assessment:
-				'\n{\n    "introduction": {"present": true, "quality": "dobra"},\n    "main_body": {"present": true, "quality": "dobra"},\n    "conclusion": {"present": false, "quality": "słaba"},\n    "logical_flow": "dobry",\n    "overall_assessment": "Wypowiedź ma dobrą strukturę, ale brakuje jej wyraźnej konkluzji."\n}',
-			speaker_identification:
-				'{\n    "speaker_count": 1,\n    "confidence": "wysoka",\n    "explanation": "Tekst jest zapisem jednobiegunowej wypowiedzi. Piszący używa pierwszej osoby liczby mnogiej (\'my\'), ale nie jest to rozmowa, w której uczestniczyłby ktoś inny, dlatego liczba mówiących osób to 1."\n}'
-		},
-		transcription:
-			"Audytem objęliśmy 96 podmiotów, a łączna kwota badanych środków publicznych to około 100 miliardów złotych. W toku działań stwierdziliśmy m.in. niegospodarne i niecelowe wydatkowanie środków publicznych, udzielenie dotacji podmiotów, które nie spełniały kryteriów konkursowych.",
-		speech_quality: {
-			pauses: 8,
-			speech_ratio: 0.4014637184677671,
-			average_pause_duration: 2402.375
-		},
-		video_analysis: {
-			emotions: {
-				sad: 21.940327259279236,
-				fear: 21.068914325837493,
-				angry: 50.831223784878425,
-				happy: 0.45466447044259695,
-				disgust: 1.4705235539851256,
-				neutral: 2.6324682899926017,
-				surprise: 1.6018788774620727
-			},
-			gestures: "Face detected",
-			movements: "Body movement detected"
-		}
-	}
-};
-
 export default function Results(props: ResultsProps) {
-	const { status, results } = fakeJson;
+	const { status, results } = props.results;
 
 	return (
 		<div className="p-6 bg-gray-100 overflow-auto">
