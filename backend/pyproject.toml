@@ -23,6 +23,8 @@ tf-keras = "^2.17.0"
 textstat = "^0.7.4"
 scikit-learn = "^1.5.2"
 python-dotenv = "^1.0.1"
+dj-database-url = "^2.2.0"
+django-redis = "^5.4.0"
 
 
 [build-system]
