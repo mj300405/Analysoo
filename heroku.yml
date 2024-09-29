@@ -5,9 +5,7 @@ setup:
 
 build:
   docker:
-    web:
-      dockerfile: backend/Dockerfile.prod
-      context: .
+    web: Dockerfile
 
 run:
   web:

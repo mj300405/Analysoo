@@ -1,0 +1,45 @@
+# Use an official Python runtime as a parent image
+FROM python:3.12-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV DEEPFACE_HOME=/app/deepface_data
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    ffmpeg \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN pip install poetry
+
+# Copy pyproject.toml and poetry.lock
+COPY pyproject.toml poetry.lock ./
+
+# Install dependencies
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-dev --no-interaction --no-ansi
+
+# Install additional dependencies (if not included in poetry)
+RUN pip install psycopg2-binary django-cors-headers whitenoise gunicorn dj-database-url
+
+# Create deepface_data directory
+RUN mkdir -p /app/deepface_data && chmod 777 /app/deepface_data
+
+# Copy project files
+COPY backend/ ./backend/
+
+# Set work directory to the backend folder
+WORKDIR /app/backend
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# The CMD is set in the heroku.yml file
