@@ -5,14 +5,16 @@ setup:
 
 build:
   docker:
-    web: backend/Dockerfile.prod
+    web:
+      dockerfile: backend/Dockerfile.prod
+      context: .
 
 run:
   web:
+    image: web
     command:
       - gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
-    image: web
   worker:
+    image: web
     command:
       - celery -A BreakWordTrapsBackend worker -l info
-    image: web
