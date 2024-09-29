@@ -97,7 +97,7 @@ export default function Form(props: FormProps) {
 							Loading...
 						</span>
 					</div>
-					{analysisStatus == "COMPLETED" && <Results results={analysisResults} />}
+					{analysisResults === "COMPLETED" && <Results results={analysisResults} />}
 				</div>
 			)}
 		</div>
