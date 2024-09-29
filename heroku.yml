@@ -1,17 +1,13 @@
-setup:
-  addons:
-    - plan: heroku-postgresql
-    - plan: heroku-redis
-
 build:
   docker:
     web: ./backend/Dockerfile.prod
 
-release:
-  command:
-    - python backend/manage.py migrate
-  image: web
-
 run:
-  web: gunicorn --chdir backend BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
-  worker: celery -A backend.BreakWordTrapsBackend worker -l info
+  web:
+    image: web
+    command:
+      - gunicorn --chdir backend BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
+  worker:
+    image: web
+    command:
+      - celery -A BreakWordTrapsBackend worker -l info
