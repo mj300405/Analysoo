@@ -22,14 +22,14 @@ export default function VideoPlayer(props: VideoPlayerProsp) {
 		setProgress(videoProgress);
 	};
 
-	useEffect(() => {
-		const videoPlayer = videoRef.current as HTMLVideoElement;
-		const duration = videoPlayer.duration;
-		// console.log(duration);
-		// console.log(timeClicked);
-		// console.log(duration * timeClicked);
-		videoRef.current?.fastSeek(duration * timeClicked);
-	}, [timeClicked]);
+	// useEffect(() => {
+	// 	const videoPlayer = videoRef.current as HTMLVideoElement;
+	// 	const duration = videoPlayer.duration;
+	// 	// console.log(duration);
+	// 	// console.log(timeClicked);
+	// 	// console.log(duration * timeClicked);
+	// 	videoRef.current?.fastSeek(duration * timeClicked);
+	// }, [timeClicked]);
 	//
 
 	return (
