@@ -1,0 +1,45 @@
+# Production Dockerfile
+
+FROM python:3.12-slim
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE BreakWordTrapsBackend.settings
+ENV DEEPFACE_HOME /app/deepface_data
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
+    ffmpeg \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN pip install poetry
+
+# Copy only requirements to cache them in docker layer
+COPY backend/pyproject.toml backend/poetry.lock ./
+
+# Project initialization:
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-dev --no-interaction --no-ansi
+
+# Install psycopg2-binary and gunicorn
+RUN pip install psycopg2-binary gunicorn
+
+# Create deepface_data directory
+RUN mkdir -p /app/deepface_data && chmod 777 /app/deepface_data
+
+# Copy project
+COPY backend .
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
+# Run the application
+CMD gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT

@@ -118,3 +118,6 @@ GitHub.sublime-settings
 # Specific to this project
 deepface_data/
 patch_libraries.py
+
+.env.prod
+.env.prod.db
