@@ -4,36 +4,43 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.prod
-    command: gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:8000
+      dockerfile: ./backend/Dockerfile.prod
+    command: gunicorn --chdir backend BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
-    expose:
-      - 8000
+      - static_volume:/app/backend/staticfiles
+      - media_volume:/app/backend/media
+    ports:
+      - "8000:8000"
     env_file:
-      - .env.prod
+      - .env.prod.local
     depends_on:
       - db
+      - redis
   
+  celery:
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile.prod
+    command: celery -A BreakWordTrapsBackend worker -l info
+    volumes:
+      - ./backend:/app/backend
+    env_file:
+      - .env.prod.local
+    depends_on:
+      - db
+      - redis
+
   db:
     image: postgres:13
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data_prod:/var/lib/postgresql/data/
     env_file:
-      - .env.prod.db
+      - .env.prod.db.local
 
-  nginx:
-    build: ./nginx
-    volumes:
-      - static_volume:/app/staticfiles
-      - media_volume:/app/media
-    ports:
-      - 1337:80
-    depends_on:
-      - web
+  redis:
+    image: "redis:alpine"
 
 volumes:
-  postgres_data:
+  postgres_data_prod:
   static_volume:
   media_volume:
