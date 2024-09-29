@@ -1,13 +1,18 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+    - plan: heroku-redis
+
 build:
   docker:
-    web: ./backend/Dockerfile.prod
+    web: backend/Dockerfile.prod
 
 run:
   web:
-    image: web
     command:
-      - gunicorn --chdir backend BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
+      - cd backend && gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
+    image: web
   worker:
-    image: web
     command:
-      - celery -A BreakWordTrapsBackend worker -l info
+      - cd backend && celery -A BreakWordTrapsBackend worker -l info
+    image: web

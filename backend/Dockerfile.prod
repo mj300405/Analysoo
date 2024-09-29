@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 ENV DEEPFACE_HOME /app/deepface_data
 
 # Set work directory
-WORKDIR /app
+WORKDIR /app/backend
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN pip install poetry
 
 # Copy pyproject.toml and poetry.lock
-COPY pyproject.toml poetry.lock ./
+COPY backend/pyproject.toml backend/poetry.lock ./
 
 # Project initialization:
 RUN poetry config virtualenvs.create false \
@@ -34,10 +34,12 @@ RUN pip install psycopg2-binary django-cors-headers whitenoise gunicorn dj-datab
 RUN mkdir -p /app/deepface_data && chmod 777 /app/deepface_data
 
 # Copy project
-COPY . .
+COPY backend .
 
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Run the application
-CMD gunicorn BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
+# Set the working directory to /app
+WORKDIR /app
+
+# The CMD is now set in the heroku.yml file
