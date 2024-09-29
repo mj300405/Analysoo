@@ -29,7 +29,7 @@ RUN poetry config virtualenvs.create false \
   && poetry install --no-interaction --no-ansi
 
 # Install psycopg2-binary
-RUN pip install psycopg2-binary
+RUN pip install psycopg2-binary django-cors-headers
 
 # Create deepface_data directory
 RUN mkdir -p /app/deepface_data && chmod 777 /app/deepface_data
