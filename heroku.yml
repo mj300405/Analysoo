@@ -1,6 +1,6 @@
 build:
   docker:
-    web: ./bacjend/Dockerfile.prod
+    web: ./backend/Dockerfile.prod
 run:
   web: gunicorn --chdir backend BreakWordTrapsBackend.wsgi:application --bind 0.0.0.0:$PORT
   worker: celery -A BreakWordTrapsBackend worker -l info
