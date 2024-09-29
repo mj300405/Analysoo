@@ -1,11 +1,15 @@
 "use client";
 import VideoPlayer from "@/components/VideoPlayer";
 import Form from "@/components/Form";
+import { useState } from "react";
 
 export default function Home() {
+	const [file, setFile] = useState<File | null>(null);
+
 	return (
-		<div>
-			<VideoPlayer src="videos/HY_2024_film_01.mp4" />;
+		<div className="w-screen h-screen flex bg-slate-400 justify-center pt-5 flex-col items-center overflow-scroll">
+			{file !== null && <VideoPlayer src="videos/HY_2024_film_01.mp4" />}
+			<Form file={file} setFile={setFile} />
 		</div>
 	);
 }

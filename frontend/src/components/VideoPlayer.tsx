@@ -22,34 +22,20 @@ export default function VideoPlayer(props: VideoPlayerProsp) {
 		setProgress(videoProgress);
 	};
 
-	// useEffect(() => {
-	// 	const videoPlayer = videoRef.current as HTMLVideoElement;
-	// 	const duration = videoPlayer.duration;
-	// 	// console.log(duration);
-	// 	// console.log(timeClicked);
-	// 	// console.log(duration * timeClicked);
-	// 	videoRef.current?.fastSeek(duration * timeClicked);
-	// }, [timeClicked]);
-	//
-
 	return (
-		<div className="w-screen h-screen flex bg-slate-400 justify-center pt-5 flex-col items-center">
-			<Form />
-
+		<>
 			<Tooltip id="tooltipId" />
-			{/* <div className="w-8/12">
+			<div className="w-2/6">
 				<video src={props.src} controls onTimeUpdate={timeUpdateHandler} ref={videoRef} />
-				<Timeline
-					tags={
-						[
-							// { message: "Tag1", timestamp: 0.24 },
-							// { message: "Tag2", timestamp: 0.56 }
-						]
-					}
+				{/* <Timeline
+					tags={[
+						{ message: "Tag1", timestamp: 0.24 },
+						{ message: "Tag2", timestamp: 0.56 }
+					]}
 					cursor={progress}
 					setTimeClicked={setTimeClicked}
-				/>
-			</div> */}
-		</div>
+				/> */}
+			</div>
+		</>
 	);
 }
